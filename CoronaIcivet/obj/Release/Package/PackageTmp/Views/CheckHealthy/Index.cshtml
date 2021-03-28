@@ -1,0 +1,130 @@
+﻿@model CoronaIcivet.Models.HealthModels
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string err = ViewBag.Error;
+}
+
+@if (!string.IsNullOrEmpty(err))
+{
+    <div>Error: @err </div>
+}
+@using (Html.BeginForm("Index", "CheckHealthy", new { area = "" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card" style="margin-top:5px;">
+        <div class="card-header">
+            <h2>Nhật kí thông tin sức khỏe </h2>
+            <h6>Xin chào: @(ViewBag.realname ?? String.Empty) , Ngày khảo sát câu hỏi : @DateTime.Now.Day/@DateTime.Now.Month/@DateTime.Now.Year</h6>
+            <input type="text" name="empNo" value="@(ViewBag.icivet ?? String.Empty)" hidden />
+            <input type="text" name="empName" value="@(ViewBag.realname ?? String.Empty)" hidden />
+            <input type="text" name="kinhtuyen" value="@(ViewBag.kt ?? String.Empty)" hidden />
+            <input type="text" name="vituyen" value="@(ViewBag.vt ?? String.Empty)" hidden />
+            <input type="text" name="bu" value="@(ViewBag.bu ?? String.Empty)" hidden />
+        </div>
+        <div class="card-body">
+            @*@Html.AntiForgeryToken()*@
+            <div class="form-horizontal">
+                <h5>Thời gian khuyến nghị đo nhiệt độ giữa 2 lần là 4-6 tiếng</h5>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <label class="control-label col-md-2">Nhiệt độ hiện tại :</label>
+                    <div class="col-md-12">
+                        <input name="Nhiet1" class="form-control" type="text" placeholder="&deg;C" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-6">Vị trí cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="vitricachly" class="form-control" type="text" placeholder="Tỉnh, huyện ,xã ,thôn ..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-6">Thời gian bắt đầu cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="tgbatdau" class="form-control" type="date" placeholder="" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-6">Thời gian hết cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="tgketthuc" class="form-control" type="date" placeholder="" />
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label col-md-6"> Lý do hết cách ly không quay lại làm việc được :</label>
+                    <div class="col-md-12" style="">
+                        <label class="radio-inline">
+                            <input type="radio" name="cars" value="co" checked="checked" /> có
+                        </label>
+                        &ensp;
+                        <label class="radio-inline">
+                            <input type="radio" name="cars" value="khong" /> không
+                        </label>
+                    </div>
+                    <div id="Cars2" class="desc col-md-12" style="display: none;">
+                        <textarea class="form-control" rows="2" name="lydo"> </textarea>
+                    </div>
+                </div>
+                <hr />
+                <h5> Tình trạng sức khỏe </h5>
+                <div style="padding-left:20px;">
+                    <div class="form-check">
+                        <label class="form-check-label" for="check1">
+                            <input type="checkbox" class="form-check-input" name="Check1" value="Trên 37.5"> Nhiệt độ trên 37,5 &deg;C
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label" for="check2">
+                            <input type="checkbox" class="form-check-input" id="check2" name="camcum" value="cảm cúm"> Cảm cúm
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check3" value="Mệt mỏi"> Mệt mỏi
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check4" value="Ho"> Ho
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check5" value="Khó thở"> khó thở
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check6" value="Tất cả đều không"> Tất cả đều không
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Gửi" class="btn btn-success" />
+                <input type="reset" value="Làm mới" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+<br />
+
+<script>
+    $(document).ready(function () {
+        $("input[name$='cars']").click(function () {
+            var test = $(this)[0].value;
+            if (test == 'co') {
+                $('#Car2').attr('style', 'display: none;');
+            } else {
+                $('#Car2').attr('style', 'display: block;');
+            }
+        });
+    });
+</script>

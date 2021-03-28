@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CoronaIcivet.Models.UserCheck>
+@{
+    ViewBag.Title = "InsertExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <script type="text/javascript">
+        alert("@ViewBag.Message");
+    </script>
+}
+
+<br />
+<style>
+</style>
+<div class="card">
+    <div class="card-header">
+        <h4>Tải lên thư mục excel</h4>
+        <h6 class="text-danger">Thời gian tải lên file excel trong khoảng 17:15 - 17:30 giờ hàng ngày. </h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @using (Html.BeginForm("InsertExcel", "CheckHealthy", FormMethod.Post, new { enctype = "multipart/form-data", @class = "col-12" }))
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-12 ">Mẫu file excel :</label>
+                    <div class="col-md-12">
+                        @Html.ActionLink("Tải xuống file mẫu", "DownloadFile", "CheckHealthy")
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <label class="control-label col-md-12">Tải lên file excel :</label>
+                    <div class="col-md-12">
+                        <input name="file" class="form-control" type="file" placeholder="" style="padding:3px;" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <input type="submit" class="btn-default " value="Tải lên" />
+                    </div>
+                </div>
+                <div> <label class="text-success">@ViewBag.Message</label></div>
+            }
+        </div>
+    </div>
+</div>
+<br />
+@if (ViewBag.Data != null)
+{
+    <table id="bootstrap-data-table" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Mã thẻ</th>
+                <th>Tên</th>
+                <th>BU</th>
+                <th>Thời gian bắt đầu</th>
+                <th> Thời gian kết thúc</th>
+                <th> Người tải lên </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in ViewBag.Data)
+            {
+                <tr>
+                    <td>@person.Mathe</td>
+                    <td>@person.Ten</td>
+                    <td>@person.BU</td>
+                    <td>@person.TimeStart</td>
+                    <td>@person.TimeEnd</td>
+                    <td>@person.AccUpload</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+

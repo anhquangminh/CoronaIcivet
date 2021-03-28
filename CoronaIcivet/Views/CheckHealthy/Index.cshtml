@@ -1,0 +1,160 @@
+﻿@model CoronaIcivet.Models.HealthModels
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string err = ViewBag.Error;
+}
+
+@if (!string.IsNullOrEmpty(err))
+{
+    <div>Error: @err </div>
+}
+
+@if (Session["errorLog1"] != null) { ViewBag.ErrorLog = "Vui lòng chọn tình trạng sức khỏe"; }
+
+@using (Html.BeginForm("Index", "CheckHealthy", new { area = "" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="card" style="margin-top:5px;">
+        <div class="card-header">
+            <h2>Nhật kí thông tin sức khỏe </h2>
+            <h6>Xin chào: @(ViewBag.realname ?? String.Empty) , Ngày khảo sát câu hỏi : @DateTime.Now.Day/@DateTime.Now.Month/@DateTime.Now.Year</h6>
+            <input type="text" name="empNo" value="@(ViewBag.icivet ?? String.Empty)" hidden />
+            <input type="text" name="empName" value="@(ViewBag.realname ?? String.Empty)" hidden />
+            <input type="text" name="kinhtuyen" value="@(ViewBag.kt ?? String.Empty)" hidden />
+            <input type="text" name="vituyen" value="@(ViewBag.vt ?? String.Empty)" hidden />
+            <input type="text" name="bu" value="@(ViewBag.bu ?? String.Empty)" hidden />
+        </div>
+
+        @*<input name="tgDinhvi" value="@Model.tgDinhvi" style="display:none" />*@
+
+        <div class="card-body">
+            @*@Html.AntiForgeryToken()*@
+            <div class="form-horizontal">
+                <h5 class="text-danger">Yêu cầu: Khai báo là 2 lần /ngày.<br /> Thời gian khai báo <br />Buổi sáng: 8:00 - 10:00 ; Buổi chiều: 14:30 - 16:30</h5>
+                <label class="text-danger">@ViewBag.ErrorLog</label>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <h4 class="text-danger text-center">@ViewBag.NgoaiGio</h4>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Nhiệt độ hiện tại < &deg;C > : </label>
+                    <div class="col-md-12">
+                        <input name="Nhiet1" class="form-control" type="number" step="0.1" placeholder="36.7" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-6">Vị trí cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="vitricachly" class="form-control" type="text" placeholder="Tỉnh, huyện ,xã ,thôn ..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-6">Thời gian bắt đầu cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="tgbatdau" class="form-control" type="date" placeholder="" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-6">Thời gian hết cách ly :</label>
+                    <div class="col-md-12">
+                        <input name="tgketthuc" class="form-control" type="date" placeholder="" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label col-md-6"> Lý do hết cách ly không quay lại làm việc được :</label>
+                        <div class="col-md-12">
+                            <label class="radio-inline">
+                                <input type="radio" name="cars" value="co" checked="checked" onclick="show1();" /> có
+                            </label>
+                            &ensp;
+                            <label class="radio-inline">
+                                <input type="radio" name="cars" value="khong" onclick="show2();" /> không
+                            </label>
+                        </div>
+                        <div id="div1" class="desc col-md-12" style="display: none;">
+                            <textarea class="form-control" rows="2" name="lydo"> </textarea>
+                        </div>
+                    </div>
+                    <div id="Cars2" class="desc col-md-12" style="display: none;">
+                        <textarea class="form-control" rows="2" name="lydo"> </textarea>
+                    </div>
+                </div>
+                <hr />
+                <h5> Tình trạng sức khỏe </h5>
+                <div style="padding-left:20px;">
+                    <div class="form-check">
+                        <label class="form-check-label" for="check1">
+                            <input type="checkbox" class="form-check-input" name="Check1" value="Trên 37.5"> Nhiệt độ trên 37,5 &deg;C
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label" for="check2">
+                            <input type="checkbox" class="form-check-input" id="check2" name="camcum" value="cảm cúm"> Cảm cúm
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check3" value="Mệt mỏi"> Mệt mỏi
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check4" value="Ho"> Ho
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check5" value="Khó thở"> khó thở
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="check6" value="Tất cả đều không" checked> Tất cả đều không
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <button onclick="sbApplication()" type="button" class="btn btn-success">Gửi</button>
+                <input type="reset" value="Làm mới" class="btn btn-danger" />
+            </div>
+        </div>
+        <div id="divCheckbox" style="display: none;">
+            <input type="submit" value="submit_ok" class="btn btn-outline-success col-sm-2 col-md-2 col-lg-2" id="submit" name="submit" />
+        </div>
+    </div>
+}
+<br />
+
+<script>
+    
+
+    function show1() {
+        document.getElementById('div1').style.display = 'none';
+    }
+    function show2() {
+        document.getElementById('div1').style.display = 'block';
+    }
+    function sbApplication() {
+        var checkFlag = false;
+        if ($("input[type='checkbox']").is(":checked")) {
+            checkFlag = true;
+        }
+
+        if (checkFlag == true) {            
+                $("#submit").click();           
+        }
+        else { alert("Vui lòng chọn tình trạng sức khỏe"); }
+
+
+        // $("#submit").click();
+    }
+
+</script>

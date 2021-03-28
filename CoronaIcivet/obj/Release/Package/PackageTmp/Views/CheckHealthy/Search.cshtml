@@ -1,0 +1,83 @@
+﻿@model PagedList.IPagedList<CoronaIcivet.Models.HealthModels>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style >
+    #col-md-3{
+        padding-bottom:0px;
+        margin-bottom:0px;
+    }
+</style>
+<div class="container">
+    <br />
+    @*<div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Nhập thông tin tìm kiếm " aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">Tìm kiếm </span>
+        </div>
+    </div>*@
+    @using (Html.BeginForm("Search", "CheckHealthy", new { area = "" }, FormMethod.Get))
+    {
+        <div class="card form-group row">
+            <div class="col-md-12 form-group row">
+                <div class="col-md-3 form-group ">
+                    <label class="label label-in">Mã thẻ</label>
+                    <input type="text" class="form-control" name="Mathe" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="label label-in">Tên</label>
+                    <input type="text" class="form-control" name="Name" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="label label-in">BU</label>
+                    <div class="form-group"><input type="text" class="form-control" name="BU" /></div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="label label-in">&ensp;</label>
+                    <span class="form-group" id="basic-addon2"><input class="form-control btn-success" type="submit" value="Tìm kiếm" /> </span>
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <th>
+                Ma The
+            </th>
+            <th>
+                Ten
+            </th>
+            <th>Nhiệt độ</th>
+            <th>Vị trí</th>
+            <th>Sức Khỏe</th>
+            <th>Thời gian bắt đầu cách ly</th>
+            <th>Thời gian kết thúc cách ly</th>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.empNo</td>
+                        <td>@item.empName</td>
+                        <td>@item.Nhiet1</td>
+                        <td>@item.location</td>
+                        <td>@item.dauhieu</td>
+                        <td>@item.tgbatdau</td>
+                        <td>@item.tgketthuc</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<div class="text-center ">
+    @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    <div class="form-control pagination" style="display:inline-block; vertical-align:middle;">
+        @Html.PagedListPager(Model, page => Url.Action("Search",
+        new { page }))
+    </div>
+</div>
+
+

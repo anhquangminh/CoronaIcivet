@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool result = Session["Res"] == null ? false : bool.Parse(Session["Res"].ToString());
+}
+<br />
+<div class="card">
+    @if (result)
+    {   
+        <div class="card-header"><h2 class="text-success  text-center">Khai báo thông tin sức khỏe thành công!</h2></div>
+        <div class="card-body" >
+            <h6>Thời gian khai báo :@Session["tg"]</h6>
+            <h6> @Session["inforuser"] </h6>
+            <h6> @Session["nhiet"] </h6>
+            <h6> @Session["suckhoe"] </h6>
+            <h6> @Session["dinhvi"] </h6>
+            <h6> @Session["vitri"] </h6>
+            <h6> @Session["ngay"] </h6>
+        </div>
+        <div class="card-footer"><h2 class="text-success  text-center">Cảm ơn bạn đã khai báo !</h2></div>
+
+    }
+    else
+    {
+        <div class="text-danger"><h2>Khai báo thông tin sức khỏe KHÔNG thành công!</h2></div>
+        <div>Vui lòng thực hiện khai báo lại!</div>
+    }
+</div>

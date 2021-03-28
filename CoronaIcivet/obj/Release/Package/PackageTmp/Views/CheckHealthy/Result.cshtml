@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool result = Session["Res"] == null ? false : bool.Parse(Session["Res"].ToString());
+}
+
+<div class="text-center">
+    @if (result)
+    {
+        <div class="text-success"><h2>Khai báo thông tin sức khỏe thành công!</h2></div>
+        <div>Chúc bạn nghỉ lễ vui vẻ!</div>
+    }
+    else
+    {
+        <div class="text-danger"><h2>Khai báo thông tin sức khỏe KHÔNG thành công!</h2></div>
+        <div>Vui lòng thực hiện khai báo lại!</div>
+    }
+</div>
